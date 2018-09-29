@@ -21,7 +21,7 @@ public class CommandActionRemove extends NPCCommand {
 
     @Override
     public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
-        if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), p, menu.getNPC(), menu.getFile()))) {
+        if (NPCs.getGame().getEventManager().post(new NPCEvent.Edit(NPCs.getContainer(), p, menu.getNPC(), menu.getFile()))) {
             throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
         }
 

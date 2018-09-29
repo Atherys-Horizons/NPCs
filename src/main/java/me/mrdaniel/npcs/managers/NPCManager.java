@@ -1,11 +1,10 @@
 package me.mrdaniel.npcs.managers;
 
+import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.Maps;
-import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.events.NPCCreateEvent;
-import me.mrdaniel.npcs.events.NPCEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.NPCFile;
 import org.spongepowered.api.data.key.Keys;
@@ -16,6 +15,7 @@ import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import javax.annotation.Nonnull;
@@ -28,15 +28,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class NPCManager extends NPCObject {
+public class NPCManager {
 
     private final Path storage_path;
 
     private final Map<NPCFile, Living> npcs;
 
     public NPCManager(@Nonnull final NPCs npcs, @Nonnull final Path storage_path) {
-        super(npcs);
-
         this.storage_path = storage_path;
 
         this.npcs = Maps.newHashMap();
@@ -45,12 +43,12 @@ public class NPCManager extends NPCObject {
             try {
                 Files.createDirectory(this.storage_path);
             } catch (final IOException exc) {
-                super.getLogger().error("Failed to create main NPC storage directory: {}", exc);
+                NPCs.getInstance().getLogger().error("Failed to create main NPC storage directory: {}", exc);
             }
         }
 
         for (String name : this.storage_path.toFile().list()) {
-            this.npcs.put(new NPCFile(super.getNPCs(), this.storage_path, Integer.valueOf(name.replaceAll("[^\\d]", ""))), null);
+            this.npcs.put(new NPCFile(this.storage_path, Integer.valueOf(name.replaceAll("[^\\d]", ""))), null);
         }
     }
 
@@ -62,7 +60,7 @@ public class NPCManager extends NPCObject {
             try {
                 this.npcs.put(file, this.spawn(file, world));
             } catch (final NPCException exc) {
-                super.getLogger().error("Failed to spawn NPC: {}", exc);
+                NPCs.getInstance().getLogger().error("Failed to spawn NPC: {}", exc);
             }
         });
     }
@@ -95,41 +93,34 @@ public class NPCManager extends NPCObject {
         return highest;
     }
 
-    public void remove(@Nonnull final Player p, final int id) throws NPCException {
+    public void remove(final int id) throws NPCException {
         NPCFile file = this.getFile(id).orElseThrow(() -> new NPCException("No NPC with that ID is exists!"));
         Living npc = this.npcs.get(file);
 
         if (npc == null) {
             throw new NPCException("No NPC with that ID is exists!");
         }
-        if (super.getGame().getEventManager().post(new NPCEvent.Remove(super.getContainer(), p, npc, file))) {
-            throw new NPCException("Event was cancelled!");
-        }
 
         file.delete(this.storage_path);
         npc.remove();
-        super.getNPCs().getMenuManager().deselect(file);
+        NPCs.getMenuManager().deselect(file);
     }
 
-    public void create(@Nonnull final Player p, @Nonnull final EntityType type) throws NPCException {
-        if (super.getGame().getEventManager().post(new NPCCreateEvent(super.getContainer(), p, type))) {
-            throw new NPCException("Event was cancelled!");
-        }
+    public void create(@Nonnull final EntityType type, Location<World> location, boolean temporary) throws NPCException {
 
-        NPCFile file = new NPCFile(super.getNPCs(), this.storage_path, this.getNextId());
+        NPCFile file = new NPCFile(this.storage_path, this.getNextId());
         file.setType(type);
-        file.setLocation(p.getLocation());
-        file.setRotation(p.getRotation());
-        file.setHead(p.getHeadRotation());
+        file.setLocation(location);
+        file.setRotation(Vector3d.FORWARD);
+        file.setHead(Vector3d.FORWARD);
         file.setInteract(true);
         file.setLooking(false);
         if (type == EntityTypes.HUMAN) {
             file.setName(Text.of("Steve"));
         }
 
-        Living npc = this.spawn(file, p.getWorld());
+        Living npc = this.spawn(file, location.getExtent());
         this.npcs.put(file, npc);
-        super.getNPCs().getMenuManager().select(p, npc, file);
         file.save();
     }
 
@@ -148,7 +139,7 @@ public class NPCManager extends NPCObject {
         file.getSkinUUID().ifPresent(uuid -> npc.offer(Keys.SKIN_UNIQUE_ID, uuid));
         if (file.getGlow()) {
             npc.offer(Keys.GLOWING, true);
-            file.getGlowColor().ifPresent(color -> super.getNPCs().getGlowColorManager().setGlowColor(npc, file.getId(), color));
+            file.getGlowColor().ifPresent(color -> NPCs.getGlowColorManager().setGlowColor(npc, file.getId(), color));
         }
         if (file.getAngry()) {
             npc.offer(Keys.ANGRY, true);
@@ -175,7 +166,7 @@ public class NPCManager extends NPCObject {
             file.getOffHand().ifPresent(stack -> ae.setItemInHand(HandTypes.OFF_HAND, stack));
         }
 
-        npc.offer(new NPCData(super.getNPCs().getStartup(), file.getId(), file.getLooking(), file.getInteract()));
+        npc.offer(new NPCData(NPCs.getStartup(), file.getId(), file.getLooking(), file.getInteract()));
 
         world.spawnEntity(npc);
         return npc;
@@ -183,11 +174,11 @@ public class NPCManager extends NPCObject {
 
     public void copy(@Nonnull final Player p, @Nonnull final NPCFile file) throws NPCException {
         EntityType type = file.getType().orElseThrow(() -> new NPCException("Invalid EntityType was found!"));
-        if (super.getGame().getEventManager().post(new NPCCreateEvent(super.getContainer(), p, file.getType().get()))) {
+        if (NPCs.getGame().getEventManager().post(new NPCCreateEvent(NPCs.getContainer(), p, file.getType().get()))) {
             throw new NPCException("Event was cancelled!");
         }
 
-        NPCFile copy = new NPCFile(super.getNPCs(), this.storage_path, this.getNextId());
+        NPCFile copy = new NPCFile(this.storage_path, this.getNextId());
         copy.setType(type);
         copy.setLocation(p.getLocation());
         copy.setHead(file.getHead());
@@ -223,7 +214,7 @@ public class NPCManager extends NPCObject {
 
         Living npc = this.spawn(copy, p.getWorld());
         this.npcs.put(copy, npc);
-        super.getNPCs().getMenuManager().select(p, npc, copy);
+        NPCs.getMenuManager().select(p, npc, copy);
         file.save();
     }
 }

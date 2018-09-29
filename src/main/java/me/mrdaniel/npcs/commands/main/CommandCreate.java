@@ -24,12 +24,12 @@ public class CommandCreate extends PlayerCommand {
     public void execute(final Player p, final CommandContext args) throws CommandException {
         EntityType type = args.<EntityType>getOne("type").orElse(EntityTypes.HUMAN);
 
-        if (super.getGame().getEventManager().post(new NPCCreateEvent(super.getContainer(), p, type))) {
+        if (NPCs.getGame().getEventManager().post(new NPCCreateEvent(NPCs.getContainer(), p, type))) {
             throw new CommandException(Text.of(TextColors.RED, "Could not create NPC: Event was cancelled"));
         }
 
         try {
-            super.getNPCs().getNPCManager().create(p, type);
+            NPCs.getNPCManager().create(type, p.getLocation(), false);
         } catch (final NPCException exc) {
             throw new CommandException(Text.of(TextColors.RED, "Failed to create NPC: {}"), exc);
         }

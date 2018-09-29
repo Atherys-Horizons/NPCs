@@ -16,6 +16,6 @@ public class CommandDeselect extends PlayerCommand {
 
     @Override
     public void execute(final Player p, final CommandContext args) throws CommandException {
-        super.getNPCs().getMenuManager().deselect(p.getUniqueId());
+        NPCs.getMenuManager().deselect(p.getUniqueId());
     }
 }

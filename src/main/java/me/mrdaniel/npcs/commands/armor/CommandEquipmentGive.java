@@ -33,7 +33,7 @@ public abstract class CommandEquipmentGive extends NPCCommand {
 
         ItemStack hand = p.getItemInHand(HandTypes.MAIN_HAND).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You must be holding an item.")));
 
-        if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), p, menu.getNPC(), menu.getFile()))) {
+        if (NPCs.getGame().getEventManager().post(new NPCEvent.Edit(NPCs.getContainer(), p, menu.getNPC(), menu.getFile()))) {
             throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
         }
 

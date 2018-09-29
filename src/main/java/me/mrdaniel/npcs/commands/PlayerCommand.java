@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.commands;
 
-import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -13,10 +12,9 @@ import org.spongepowered.api.text.format.TextColors;
 
 import javax.annotation.Nonnull;
 
-public abstract class PlayerCommand extends NPCObject implements CommandExecutor {
+public abstract class PlayerCommand implements CommandExecutor {
 
     public PlayerCommand(@Nonnull final NPCs npcs) {
-        super(npcs);
     }
 
     @Override

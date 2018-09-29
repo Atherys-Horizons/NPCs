@@ -22,7 +22,7 @@ public class CommandCopy extends NPCCommand {
     @Override
     public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
         try {
-            super.getNPCs().getNPCManager().create(p, menu.getFile().getType().orElseThrow(() -> new CommandException(Text.of(TextColors.RED, ""))));
+            NPCs.getNPCManager().create(menu.getFile().getType().orElseThrow(() -> new CommandException(Text.of(TextColors.RED, ""))), p.getLocation(), false);
         } catch (final NPCException exc) {
             throw new CommandException(Text.of(TextColors.RED, "Failed to copy NPC: {}", exc));
         }

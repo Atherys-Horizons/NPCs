@@ -26,17 +26,17 @@ public class CommandSkin extends NPCCommand {
         if (!menu.getNPC().supports(Keys.SKIN_UNIQUE_ID)) {
             throw new CommandException(Text.of(TextColors.RED, "You can only give human NPC's a skin."));
         }
-        if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), p, menu.getNPC(), menu.getFile()))) {
+        if (NPCs.getGame().getEventManager().post(new NPCEvent.Edit(NPCs.getContainer(), p, menu.getNPC(), menu.getFile()))) {
             throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
         }
 
         String name = args.<String>getOne("name").get();
         menu.getFile().setSkinName(name);
 
-        super.getServer().getGameProfileManager().get(name).thenAccept(gp -> Task.builder().delayTicks(0).execute(() -> {
+        NPCs.getGame().getServer().getGameProfileManager().get(name).thenAccept(gp -> Task.builder().delayTicks(0).execute(() -> {
             menu.getNPC().offer(Keys.SKIN_UNIQUE_ID, gp.getUniqueId());
             menu.getFile().setSkinUUID(gp.getUniqueId());
             menu.getFile().save();
-        }).submit(super.getNPCs()));
+        }).submit(NPCs.getInstance()));
     }
 }

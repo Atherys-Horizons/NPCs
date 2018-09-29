@@ -33,7 +33,7 @@ public class CommandInfo extends PlayerCommand {
 
     @Override
     public void execute(@Nonnull final Player p, @Nonnull final CommandContext args) throws CommandException {
-        Optional<NPCMenu> menu = super.getNPCs().getMenuManager().get(p.getUniqueId());
+        Optional<NPCMenu> menu = NPCs.getMenuManager().get(p.getUniqueId());
         if (menu.isPresent()) {
             menu.get().send(p, PageTypes.MAIN);
         } else {

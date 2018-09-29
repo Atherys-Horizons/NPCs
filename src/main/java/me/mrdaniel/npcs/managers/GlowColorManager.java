@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.managers;
 
-import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.data.key.Keys;
@@ -12,15 +11,14 @@ import org.spongepowered.api.text.format.TextColor;
 
 import javax.annotation.Nonnull;
 
-public class GlowColorManager extends NPCObject {
+public class GlowColorManager {
 
     public GlowColorManager(@Nonnull final NPCs npcs) {
-        super(npcs);
     }
 
     private void createTeam(@Nonnull final String name, @Nonnull final Living npc) {
-        if (!super.getServer().getServerScoreboard().get().getTeam(name).isPresent()) {
-            super.getServer().getServerScoreboard().get().registerTeam(Team.builder().name(name).displayName(Text.of(name)).build());
+        if (!NPCs.getGame().getServer().getServerScoreboard().get().getTeam(name).isPresent()) {
+            NPCs.getGame().getServer().getServerScoreboard().get().registerTeam(Team.builder().name(name).displayName(Text.of(name)).build());
             this.addMember(name, npc);
         }
     }
@@ -42,6 +40,6 @@ public class GlowColorManager extends NPCObject {
     }
 
     private void execute(@Nonnull final String command) {
-        super.getGame().getCommandManager().process(super.getServer().getConsole(), command);
+        NPCs.getGame().getCommandManager().process(NPCs.getGame().getServer().getConsole(), command);
     }
 }

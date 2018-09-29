@@ -33,7 +33,7 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
 
         this.get(ae).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "The selected NPC does not have that piece of equipment.")));
 
-        if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), p, menu.getNPC(), menu.getFile()))) {
+        if (NPCs.getGame().getEventManager().post(new NPCEvent.Edit(NPCs.getContainer(), p, menu.getNPC(), menu.getFile()))) {
             throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
         }
 

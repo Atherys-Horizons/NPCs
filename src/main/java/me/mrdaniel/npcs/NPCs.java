@@ -27,11 +27,9 @@ import me.mrdaniel.npcs.data.npc.actions.conditions.ConditionTypeSerializer;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.WorldListener;
 import me.mrdaniel.npcs.managers.*;
-import me.mrdaniel.npcs.managers.placeholders.PlaceHolderAPIManager;
 import me.mrdaniel.npcs.managers.placeholders.SimplePlaceHolderManager;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -69,9 +67,10 @@ import java.util.Random;
         dependencies = {@Dependency(id = "placeholderapi", optional = true)})
 public class NPCs {
 
+    private static NPCs instance;
+
     private final Game game;
     private final PluginContainer container;
-    private final Logger logger;
     private final Path configDir;
 
     private NPCManager npcmanager;
@@ -83,10 +82,12 @@ public class NPCs {
     private int startup;
 
     @Inject
+    private Logger logger;
+
+    @Inject
     public NPCs(final Game game, final PluginContainer container, @ConfigDir(sharedRoot = false) final Path path, final MetricsLite metrics) {
         this.game = game;
         this.container = container;
-        this.logger = LoggerFactory.getLogger("NPCs");
         this.configDir = path;
 
         if (!Files.exists(path)) {
@@ -114,19 +115,15 @@ public class NPCs {
 
         Config config = new Config(this, this.configDir.resolve("config.conf"));
 
+        instance = this;
+
         this.npcmanager = new NPCManager(this, this.configDir.resolve("storage"));
         this.actions = new ActionManager(this);
         this.menus = new MenuManager(this, config);
         this.glowcolors = new GlowColorManager(this);
         this.startup = new Random().nextInt(Integer.MAX_VALUE);
 
-        try {
-            this.placeholders = new PlaceHolderAPIManager(this, config);
-            this.logger.info("Found PlaceholderAPI: Loaded successfully.");
-        } catch (final Throwable exc) {
-            this.placeholders = new SimplePlaceHolderManager(config);
-            this.logger.info("Could not find PlaceholderAPI: Loaded a simple version instead.");
-        }
+        this.placeholders = new SimplePlaceHolderManager(config);
 
         this.game.getCommandManager().register(this, CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))
                 .executor(new CommandInfo(this))
@@ -232,51 +229,55 @@ public class NPCs {
     }
 
     @Nonnull
-    public Game getGame() {
-        return this.game;
+    public static Game getGame() {
+        return getInstance().game;
     }
 
     @Nonnull
-    public PluginContainer getContainer() {
-        return this.container;
+    public static PluginContainer getContainer() {
+        return getInstance().container;
     }
 
     @Nonnull
-    public Path getConfigDir() {
-        return this.configDir;
+    public static Path getConfigDir() {
+        return getInstance().configDir;
     }
 
     @Nonnull
     public Logger getLogger() {
-        return this.logger;
+        return logger;
     }
 
     @Nonnull
-    public NPCManager getNPCManager() {
-        return this.npcmanager;
+    public static NPCManager getNPCManager() {
+        return getInstance().npcmanager;
     }
 
     @Nonnull
-    public ActionManager getActionManager() {
-        return this.actions;
+    public static ActionManager getActionManager() {
+        return getInstance().actions;
     }
 
     @Nonnull
-    public MenuManager getMenuManager() {
-        return this.menus;
+    public static MenuManager getMenuManager() {
+        return getInstance().menus;
     }
 
     @Nonnull
-    public GlowColorManager getGlowColorManager() {
-        return this.glowcolors;
+    public static GlowColorManager getGlowColorManager() {
+        return getInstance().glowcolors;
     }
 
     @Nonnull
-    public PlaceHolderManager getPlaceHolderManager() {
-        return this.placeholders;
+    public static PlaceHolderManager getPlaceHolderManager() {
+        return getInstance().placeholders;
     }
 
-    public int getStartup() {
-        return this.startup;
+    public static int getStartup() {
+        return getInstance().startup;
+    }
+
+    public static NPCs getInstance() {
+        return instance;
     }
 }

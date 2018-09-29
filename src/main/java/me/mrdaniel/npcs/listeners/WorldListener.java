@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.listeners;
 
-import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.events.NPCEvent;
@@ -15,6 +14,7 @@ import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.filter.cause.Root;
+import org.spongepowered.api.event.game.state.GameStoppingEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.scheduler.Task;
@@ -24,21 +24,33 @@ import org.spongepowered.api.world.World;
 
 import javax.annotation.Nonnull;
 
-public class WorldListener extends NPCObject {
+public class WorldListener {
 
     public WorldListener(@Nonnull final NPCs npcs) {
-        super(npcs);
+    }
+
+    @Listener
+    public void onUnloadWorld(final GameStoppingEvent e) {
+        NPCs.getNPCManager().getAll().forEach(npcFile -> {
+            try {
+                if (npcFile.isTemporary()) {
+                    NPCs.getNPCManager().remove(npcFile.getId());
+                }
+            } catch(NPCException exception) {
+               NPCs.getInstance().getLogger().error("NPC with ID {} does not exist", npcFile.getId());
+            }
+        });
     }
 
     @Listener(order = Order.LATE)
     public void onLoadWorld(final LoadWorldEvent e) {
         World w = e.getTargetWorld();
-        Task.builder().delayTicks(100).execute(() -> super.getNPCs().getNPCManager().load(w)).submit(super.getNPCs());
+        Task.builder().delayTicks(100).execute(() -> NPCs.getNPCManager().load(w)).submit(NPCs.getInstance());
     }
 
     @Listener(order = Order.EARLY)
     public void onEntitySpawn(final SpawnEntityEvent e) {
-        e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> data.ifOld(super.getNPCs().getStartup(), () -> ent.remove())));
+        e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> data.ifOld(NPCs.getStartup(), ent::remove)));
     }
 
     @Listener(order = Order.EARLY)
@@ -58,13 +70,13 @@ public class WorldListener extends NPCObject {
             e.setCancelled(!data.canInteract());
 
             if (e instanceof InteractEntityEvent.Secondary.MainHand) {
-                super.getNPCs().getNPCManager().getFile(data.getId()).ifPresent(file -> {
+                NPCs.getNPCManager().getFile(data.getId()).ifPresent(file -> {
                     if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
-                        super.getNPCs().getMenuManager().select(p, npc, file);
+                        NPCs.getMenuManager().select(p, npc, file);
                     } else {
-                        if (!super.getGame().getEventManager().post(new NPCEvent.Interact(super.getContainer(), p, npc, file))) {
+                        if (!NPCs.getGame().getEventManager().post(new NPCEvent.Interact(NPCs.getContainer(), p, npc, file))) {
                             try {
-                                super.getNPCs().getActionManager().execute(p.getUniqueId(), file);
+                                NPCs.getActionManager().execute(p.getUniqueId(), file);
                             } catch (final NPCException exc) {
                                 p.sendMessage(Text.of(TextColors.RED, "Failed to perform NPC actions: " + exc.getMessage()));
                             }
@@ -77,7 +89,7 @@ public class WorldListener extends NPCObject {
 
     @Listener(order = Order.LATE)
     public void onQuit(final ClientConnectionEvent.Disconnect e) {
-        super.getNPCs().getMenuManager().deselect(e.getTargetEntity().getUniqueId());
-        super.getNPCs().getActionManager().removeChoosing(e.getTargetEntity().getUniqueId());
+        NPCs.getMenuManager().deselect(e.getTargetEntity().getUniqueId());
+        NPCs.getActionManager().removeChoosing(e.getTargetEntity().getUniqueId());
     }
 }

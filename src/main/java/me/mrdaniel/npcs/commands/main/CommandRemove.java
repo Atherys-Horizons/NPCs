@@ -22,7 +22,7 @@ public class CommandRemove extends NPCCommand {
     @Override
     public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
         try {
-            super.getNPCs().getNPCManager().remove(p, menu.getFile().getId());
+            NPCs.getNPCManager().remove(menu.getFile().getId());
         } catch (final NPCException exc) {
             throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: {}", exc));
         }

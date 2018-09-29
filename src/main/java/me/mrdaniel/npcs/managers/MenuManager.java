@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.managers;
 
 import com.google.common.collect.Maps;
-import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
 import me.mrdaniel.npcs.data.npc.NPCData;
@@ -21,28 +20,26 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class MenuManager extends NPCObject {
+public class MenuManager {
 
     private final Map<UUID, NPCMenu> menus;
     private final Text select_message;
     private final boolean open_menu;
 
     public MenuManager(@Nonnull final NPCs npcs, @Nonnull final Config config) {
-        super(npcs);
-
         this.menus = Maps.newHashMap();
         this.select_message = TextUtils.toText(config.getNode("npc_select_message").getString("&eYou selected an NPC."));
         this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
     }
 
     public void select(@Nonnull final Player p, @Nonnull final NPCFile file) throws NPCException {
-        Living npc = super.getNPCs().getNPCManager().getNPC(file).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned."));
+        Living npc = NPCs.getNPCManager().getNPC(file).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned."));
         this.select(p, npc, file);
     }
 
     public void select(@Nonnull final Player p, @Nonnull final Living npc) throws NPCException {
         NPCData data = npc.get(NPCData.class).orElseThrow(() -> new NPCException("This Entity is not an NPC!"));
-        NPCFile file = super.getNPCs().getNPCManager().getFile(data.getId()).orElseThrow(() -> new NPCException("No NPC file with this id was found!"));
+        NPCFile file = NPCs.getNPCManager().getFile(data.getId()).orElseThrow(() -> new NPCException("No NPC file with this id was found!"));
         this.select(p, npc, file);
     }
 

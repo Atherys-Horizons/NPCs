@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.commands.main;
 
 import com.flowpowered.math.vector.Vector3i;
-import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.NPCFile;
@@ -17,16 +16,15 @@ import org.spongepowered.api.text.format.TextColors;
 
 import javax.annotation.Nonnull;
 
-public class CommandList extends NPCObject implements CommandExecutor {
+public class CommandList implements CommandExecutor {
 
     public CommandList(@Nonnull final NPCs npcs) {
-        super(npcs);
     }
 
     @Override
     public CommandResult execute(final CommandSource src, final CommandContext args) throws CommandException {
         src.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC List", TextColors.YELLOW, " ]=====---------------")));
-        super.getNPCs().getNPCManager().getAll().forEach(file -> src.sendMessage(this.getNPCText(file)));
+        NPCs.getNPCManager().getAll().forEach(file -> src.sendMessage(this.getNPCText(file)));
         src.sendMessage(Text.of(TextColors.YELLOW, "--------------------------------------------------"));
         return CommandResult.success();
     }
@@ -42,7 +40,7 @@ public class CommandList extends NPCObject implements CommandExecutor {
         return b.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Select")))
                 .onClick(TextActions.executeCallback(src -> {
                     try {
-                        super.getNPCs().getMenuManager().select((Player) src, file);
+                        NPCs.getMenuManager().select((Player) src, file);
                     } catch (final NPCException exc) {
                         src.sendMessage(Text.of(TextColors.RED, exc.getMessage()));
                     }

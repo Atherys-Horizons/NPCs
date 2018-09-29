@@ -24,7 +24,7 @@ public class CommandSize extends NPCCommand {
     public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
         if (!menu.getNPC().supports(Keys.SLIME_SIZE))
             throw new CommandException(Text.of(TextColors.RED, "You can only use this on slime NPC's."));
-        if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), p, menu.getNPC(), menu.getFile()))) {
+        if (NPCs.getGame().getEventManager().post(new NPCEvent.Edit(NPCs.getContainer(), p, menu.getNPC(), menu.getFile()))) {
             throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
         }
 

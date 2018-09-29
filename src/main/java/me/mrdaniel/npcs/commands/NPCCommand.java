@@ -23,7 +23,7 @@ public abstract class NPCCommand extends PlayerCommand {
 
     @Override
     public void execute(final Player p, final CommandContext args) throws CommandException {
-        NPCMenu menu = super.getNPCs().getMenuManager().get(p.getUniqueId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!")));
+        NPCMenu menu = NPCs.getMenuManager().get(p.getUniqueId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!")));
         this.execute(p, menu, args);
         menu.updateAndSend(p, this.page);
     }
