@@ -106,7 +106,7 @@ public class NPCManager {
         NPCs.getMenuManager().deselect(file);
     }
 
-    public void create(@Nonnull final EntityType type, Location<World> location, boolean temporary) throws NPCException {
+    public NPCFile create(@Nonnull final EntityType type, Location<World> location, boolean temporary) throws NPCException {
 
         NPCFile file = new NPCFile(this.storage_path, this.getNextId());
         file.setType(type);
@@ -122,6 +122,8 @@ public class NPCManager {
         Living npc = this.spawn(file, location.getExtent());
         this.npcs.put(file, npc);
         file.save();
+
+        return file;
     }
 
     @Nonnull

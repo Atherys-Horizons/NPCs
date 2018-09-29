@@ -112,8 +112,8 @@ public class NPCFile {
         return temporary;
     }
 
-    public void setTemporary() {
-        temporary = true;
+    public void setTemporary(boolean temp) {
+        temporary = temp;
     }
 
     @Nonnull
@@ -412,5 +412,10 @@ public class NPCFile {
         } catch (final ObjectMappingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+       return getType().get().toString();
     }
 }
