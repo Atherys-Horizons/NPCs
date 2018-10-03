@@ -60,17 +60,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
 
-@Plugin(id = "npcs",
-        name = "NPCs",
-        version = "2.0.2-API7",
-        authors = {"Daniel12321"},
-        url = "https://github.com/Daniel12321/NPCs",
-        description = "A plugin that adds simple custom NPC's to your worlds.",
-        dependencies = {
+@Plugin(
+    id = "npcs",
+    name = "NPCs",
+    version = "2.0.2-API7",
+    authors = {"Daniel12321"},
+    url = "https://github.com/Daniel12321/NPCs",
+    description = "A plugin that adds simple custom NPC's to your worlds.",
+    dependencies = {
         @Dependency(id = "placeholderapi", optional = true),
         @Dependency(id = "atherysscript")
-
-}
+    }
 )
 public class NPCs {
 

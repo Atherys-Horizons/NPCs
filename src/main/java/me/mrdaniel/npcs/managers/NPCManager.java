@@ -130,6 +130,8 @@ public class NPCManager {
     private Living spawn(@Nonnull final NPCFile file, @Nonnull final World world) throws NPCException {
         Living npc = (Living) world.createEntity(file.getType().orElseThrow(() -> new NPCException("An NPC's EntityType could not be found!")), file.getPosition());
 
+        file.setCache(npc.getUniqueId());
+
         npc.offer(Keys.PERSISTS, true);
         npc.offer(Keys.AI_ENABLED, false);
         npc.setRotation(file.getRotation());

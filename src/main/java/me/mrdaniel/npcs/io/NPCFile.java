@@ -37,6 +37,7 @@ public class NPCFile {
     private boolean temporary;
     private final ConfigurationLoader<CommentedConfigurationNode> loader;
     private final CommentedConfigurationNode node;
+    private UUID cache;
 
     private final List<Action> actions;
     private final Map<UUID, Integer> current;
@@ -106,6 +107,18 @@ public class NPCFile {
     public void setLocation(@Nonnull final Location<World> loc) {
         this.setWorld(loc.getExtent());
         this.setPosition(loc.getPosition());
+    }
+
+    public void setCache(UUID id) {
+        cache = id;
+    }
+
+    public Optional<UUID> getCache() {
+        if (cache == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(cache);
     }
 
     public boolean isTemporary() {
