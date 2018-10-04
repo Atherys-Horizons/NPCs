@@ -11,6 +11,11 @@ import java.util.function.BiFunction;
  */
 public class SetNPCSkin implements BiFunction<NPCFile, UUID, Boolean> {
 
+    /**
+     * Sets the skin of the NPC given a player's UUID.
+     * @param npcFile A humanoid NPC.
+     * @return False if the NPC was not humanoid.
+     */
     @Override
     public Boolean apply(NPCFile npcFile, UUID uuid) {
         if (npcFile.getType().get() instanceof ArmorEquipable) {

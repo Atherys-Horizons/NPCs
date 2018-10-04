@@ -17,6 +17,9 @@ import java.util.function.BiFunction;
  */
 public class CreateNPC implements BiFunction<String, Location<World>, NPCFile> {
 
+    /**
+     * Creates an NPC of the given type at the given location.
+     */
     @Override
     public NPCFile apply(String entityTypeId, Location<World> location) {
         Optional<EntityType> type = Sponge.getRegistry().getType(EntityType.class, entityTypeId);
