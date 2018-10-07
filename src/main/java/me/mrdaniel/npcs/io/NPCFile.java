@@ -14,6 +14,7 @@ import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.data.type.*;
+import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
@@ -219,6 +220,16 @@ public class NPCFile {
 
     public void setGlowColor(@Nonnull final TextColor color) {
         this.node.getNode("glow", "color").setValue(color.getId());
+    }
+
+    public Optional<Entity> getEntity() {
+        Optional<World> world = getWorld();
+        Optional<UUID> uuid = getCache();
+
+        if (world.isPresent() && uuid.isPresent()) {
+            return world.get().getEntity(uuid.get());
+        }
+        return Optional.empty();
     }
 
     public boolean getGlow() {
