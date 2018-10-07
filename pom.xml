@@ -40,5 +40,10 @@
             <artifactId>PlaceholderAPI</artifactId>
             <version>master-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.Atherys-Horizons</groupId>
+            <artifactId>AtherysScript</artifactId>
+            <version>master-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
