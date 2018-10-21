@@ -29,7 +29,6 @@ import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.WorldListener;
 import me.mrdaniel.npcs.managers.*;
 import me.mrdaniel.npcs.managers.placeholders.SimplePlaceHolderManager;
-import me.mrdaniel.npcs.script.NpcExtension;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
@@ -217,8 +216,6 @@ public class NPCs {
         this.game.getEventManager().registerListeners(this, new WorldListener(this));
 
         Task.builder().delayTicks(60).intervalTicks(config.getNode("npc_update_ticks").getInt(2)).execute(() -> this.game.getServer().getWorlds().forEach(w -> w.getEntities().stream().filter(ent -> ent.get(NPCData.class).isPresent()).forEach(ent -> ent.get(NPCData.class).get().tick((Living) ent)))).submit(this);
-
-        JavaScriptLibrary.getInstance().extendWith(NpcExtension.getInstance());
 
         this.logger.info("Plugin loaded successfully.");
     }
