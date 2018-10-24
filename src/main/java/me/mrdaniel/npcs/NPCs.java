@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs;
 
-import com.atherys.script.js.JavaScriptLibrary;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import me.mrdaniel.npcs.bstats.MetricsLite;
