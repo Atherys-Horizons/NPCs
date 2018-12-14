@@ -29,7 +29,7 @@ public class CommandCreate extends PlayerCommand {
         }
 
         try {
-            NPCs.getNPCManager().create(type, p.getLocation(), false);
+            NPCs.getNPCManager().create(type, p.getLocation());
         } catch (final NPCException exc) {
             throw new CommandException(Text.of(TextColors.RED, "Failed to create NPC: {}"), exc);
         }

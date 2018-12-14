@@ -53,6 +53,7 @@ public class NPCManager {
     }
 
     public void load(@Nonnull final World world) {
+        NPCs.getInstance().getLogger().info("Loading NPCs...");
         List<NPCFile> files = this.npcs.keySet().stream().filter(file -> file.getWorldName().equalsIgnoreCase(world.getName())).collect(Collectors.toList());
         files.forEach(file -> {
             world.loadChunk(file.getPosition().toInt().div(16).mul(1, 0, 1), false);
@@ -106,7 +107,7 @@ public class NPCManager {
         NPCs.getMenuManager().deselect(file);
     }
 
-    public NPCFile create(@Nonnull final EntityType type, Location<World> location, boolean temporary) throws NPCException {
+    public NPCFile create(@Nonnull final EntityType type, Location<World> location) throws NPCException {
 
         NPCFile file = new NPCFile(this.storage_path, this.getNextId());
         file.setType(type);
@@ -122,6 +123,7 @@ public class NPCManager {
         Living npc = this.spawn(file, location.getExtent());
         this.npcs.put(file, npc);
         file.save();
+
 
         return file;
     }
@@ -172,7 +174,8 @@ public class NPCManager {
 
         npc.offer(new NPCData(NPCs.getStartup(), file.getId(), file.getLooking(), file.getInteract()));
 
-        world.spawnEntity(npc);
+        boolean spawned = world.spawnEntity(npc);
+
         return npc;
     }
 
