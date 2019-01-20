@@ -61,21 +61,18 @@ import java.util.Random;
 @Plugin(
     id = "npcs",
     name = "NPCs",
-    version = "2.0.2-API7",
+    version = "3.0.3-API7",
     authors = {"Daniel12321"},
     url = "https://github.com/Daniel12321/NPCs",
     description = "A plugin that adds simple custom NPC's to your worlds.",
     dependencies = {
         @Dependency(id = "placeholderapi", optional = true),
-        @Dependency(id = "atherysscript")
     }
 )
 public class NPCs {
 
     private static NPCs instance;
 
-    private final Game game;
-    private final PluginContainer container;
     private final Path configDir;
 
     private NPCManager npcmanager;
@@ -90,9 +87,13 @@ public class NPCs {
     private Logger logger;
 
     @Inject
-    public NPCs(final Game game, final PluginContainer container, @ConfigDir(sharedRoot = false) final Path path, final MetricsLite metrics) {
-        this.game = game;
-        this.container = container;
+    private PluginContainer container;
+
+    @Inject
+    private Game game;
+
+    @Inject
+    public NPCs(@ConfigDir(sharedRoot = false) final Path path) {
         this.configDir = path;
 
         if (!Files.exists(path)) {
@@ -117,10 +118,10 @@ public class NPCs {
     @Listener
     public void onInit(@Nullable final GameInitializationEvent e) {
         this.logger.info("Loading plugin...");
-
-        Config config = new Config(this, this.configDir.resolve("config.conf"));
-
         instance = this;
+
+        Config config = new Config(this.configDir.resolve("config.conf"));
+
 
         this.npcmanager = new NPCManager(this, this.configDir.resolve("storage"));
         this.actions = new ActionManager(this);
@@ -249,11 +250,6 @@ public class NPCs {
     }
 
     @Nonnull
-    public Logger getLogger() {
-        return logger;
-    }
-
-    @Nonnull
     public static NPCManager getNPCManager() {
         return getInstance().npcmanager;
     }
@@ -280,6 +276,10 @@ public class NPCs {
 
     public static int getStartup() {
         return getInstance().startup;
+    }
+
+    public static Logger getLogger() {
+        return getInstance().logger;
     }
 
     public static NPCs getInstance() {

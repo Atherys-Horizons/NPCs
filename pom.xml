@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.mrdaniel</groupId>
     <artifactId>NPCs</artifactId>
-    <version>2.0.2-API7</version>
+    <version>3.0.3-API7</version>
     <name>NPCs</name>
     <repositories>
         <repository>

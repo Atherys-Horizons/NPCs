@@ -16,17 +16,17 @@ public class Config {
     private final ConfigurationLoader<CommentedConfigurationNode> loader;
     private final CommentedConfigurationNode node;
 
-    public Config(@Nonnull final NPCs npcs, @Nonnull final Path path) {
+    public Config(@Nonnull final Path path) {
         this.loader = HoconConfigurationLoader.builder().setPath(path).build();
 
         if (!Files.exists(path)) {
             try {
-                npcs.getContainer().getAsset("config.conf").get().copyToFile(path);
+                NPCs.getContainer().getAsset("config.conf").get().copyToFile(path);
             } catch (final IOException exc) {
-                npcs.getLogger().error("Failed to save config asset: {}", exc);
+                NPCs.getLogger().error("Failed to save config asset: {}", exc);
             }
         }
-        this.node = this.load(npcs.getLogger());
+        this.node = this.load(NPCs.getLogger());
     }
 
     private CommentedConfigurationNode load(@Nonnull final Logger logger) {
