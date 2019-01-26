@@ -105,6 +105,19 @@ public class NPCs {
         }
     }
 
+    private void reload() {
+        this.logger.info("Reloading Plugin...");
+
+        this.game.getEventManager().unregisterPluginListeners(this);
+        this.game.getScheduler().getScheduledTasks(this).forEach(task -> task.cancel());
+        this.game.getCommandManager().getOwnedBy(this).forEach(this.game.getCommandManager()::removeMapping);
+
+        this.onInit(null);
+
+        this.game.getServer().getWorlds().forEach(w -> w.getEntities(ent -> ent.get(NPCData.class).isPresent()).forEach(ent -> ent.remove()));
+        Task.builder().delayTicks(100).execute(() -> this.game.getServer().getWorlds().forEach(w -> this.npcmanager.load(w))).submit(this);
+    }
+
     @Listener
     public void onPreInit(@Nullable final GamePreInitializationEvent e) {
         DataRegistration.builder().dataClass(NPCData.class).immutableClass(ImmutableNPCData.class).builder(new NPCDataBuilder()).dataName("npc").manipulatorId("npc").buildAndRegister(this.container);
@@ -222,16 +235,7 @@ public class NPCs {
 
     @Listener
     public void onReload(@Nullable final GameReloadEvent e) {
-        this.logger.info("Reloading Plugin...");
-
-        this.game.getEventManager().unregisterPluginListeners(this);
-        this.game.getScheduler().getScheduledTasks(this).forEach(task -> task.cancel());
-        this.game.getCommandManager().getOwnedBy(this).forEach(this.game.getCommandManager()::removeMapping);
-
-        this.onInit(null);
-
-        this.game.getServer().getWorlds().forEach(w -> w.getEntities(ent -> ent.get(NPCData.class).isPresent()).forEach(ent -> ent.remove()));
-        Task.builder().delayTicks(100).execute(() -> this.game.getServer().getWorlds().forEach(w -> this.npcmanager.load(w))).submit(this);
+        reload();
     }
 
     @Nonnull
@@ -284,5 +288,10 @@ public class NPCs {
 
     public static NPCs getInstance() {
         return instance;
+    }
+
+    public static void reload(PluginContainer plugin) {
+        getLogger().info("Plugin " + plugin.getName() + " reloaded NPCs.");
+        getInstance().reload();
     }
 }
