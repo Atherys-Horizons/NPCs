@@ -1,10 +1,10 @@
 package me.mrdaniel.npcs.data.npc.actions;
 
 import com.google.common.collect.Maps;
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
-import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.exceptions.NpcException;
+import me.mrdaniel.npcs.io.NpcFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
@@ -40,7 +40,7 @@ public class ActionChoices extends Action {
     }
 
     @Override
-    public void execute(final NPCs npcs, final ActionResult result, final Player p, final NPCFile file) {
+    public void execute(final Npcs npcs, final ActionResult result, final Player p, final NpcFile file) {
         npcs.getActionManager().setChoosing(p.getUniqueId(), file);
 
         UUID uuid = p.getUniqueId();
@@ -49,7 +49,7 @@ public class ActionChoices extends Action {
         this.choices.forEach((txt, next) -> b.append(Text.builder().append(Text.of(TextColors.RED, TextStyles.UNDERLINE, txt)).onHover(TextActions.showText(Text.of(TextColors.GOLD, "Choose"))).onClick(TextActions.executeCallback(src -> {
             try {
                 npcs.getActionManager().executeChoice(file, uuid, next);
-            } catch (final NPCException exc) {
+            } catch (final NpcException exc) {
             }
         })).build(), Text.of("  ")));
 

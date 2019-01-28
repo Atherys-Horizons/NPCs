@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.io;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -21,12 +21,12 @@ public class Config {
 
         if (!Files.exists(path)) {
             try {
-                NPCs.getContainer().getAsset("config.conf").get().copyToFile(path);
+                Npcs.getContainer().getAsset("config.conf").get().copyToFile(path);
             } catch (final IOException exc) {
-                NPCs.getLogger().error("Failed to save config asset: {}", exc);
+                Npcs.getLogger().error("Failed to save config asset: {}", exc);
             }
         }
-        this.node = this.load(NPCs.getLogger());
+        this.node = this.load(Npcs.getLogger());
     }
 
     private CommentedConfigurationNode load(@Nonnull final Logger logger) {

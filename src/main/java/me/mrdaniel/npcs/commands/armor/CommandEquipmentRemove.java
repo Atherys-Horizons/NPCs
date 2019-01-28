@@ -1,11 +1,11 @@
 package me.mrdaniel.npcs.commands.armor;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
-import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.events.NPCEvent;
-import me.mrdaniel.npcs.io.NPCFile;
-import me.mrdaniel.npcs.managers.menu.NPCMenu;
+import me.mrdaniel.npcs.commands.NpcCommand;
+import me.mrdaniel.npcs.events.NpcEvent;
+import me.mrdaniel.npcs.io.NpcFile;
+import me.mrdaniel.npcs.managers.menu.NpcMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.data.type.HandTypes;
@@ -18,23 +18,23 @@ import org.spongepowered.api.text.format.TextColors;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public abstract class CommandEquipmentRemove extends NPCCommand {
+public abstract class CommandEquipmentRemove extends NpcCommand {
 
-    public CommandEquipmentRemove(@Nonnull final NPCs npcs) {
+    public CommandEquipmentRemove(@Nonnull final Npcs npcs) {
         super(npcs, PageTypes.ARMOR);
     }
 
     @Override
-    public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
-        if (!(menu.getNPC() instanceof ArmorEquipable)) {
-            throw new CommandException(Text.of(TextColors.RED, "The selected NPC can not wear armor!"));
+    public void execute(final Player p, final NpcMenu menu, final CommandContext args) throws CommandException {
+        if (!(menu.getNpc() instanceof ArmorEquipable)) {
+            throw new CommandException(Text.of(TextColors.RED, "The selected Npc can not wear armor!"));
         }
-        ArmorEquipable ae = (ArmorEquipable) menu.getNPC();
+        ArmorEquipable ae = (ArmorEquipable) menu.getNpc();
 
-        this.get(ae).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "The selected NPC does not have that piece of equipment.")));
+        this.get(ae).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "The selected Npc does not have that piece of equipment.")));
 
-        if (NPCs.getGame().getEventManager().post(new NPCEvent.Edit(NPCs.getContainer(), p, menu.getNPC(), menu.getFile()))) {
-            throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
+        if (Npcs.getGame().getEventManager().post(new NpcEvent.Edit(Npcs.getContainer(), p, menu.getNpc(), menu.getFile()))) {
+            throw new CommandException(Text.of(TextColors.RED, "Could not edit Npc: Event was cancelled!"));
         }
 
         this.clear(ae);
@@ -45,10 +45,10 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
 
     public abstract void clear(@Nonnull final ArmorEquipable ae);
 
-    public abstract void clear(@Nonnull final NPCFile file);
+    public abstract void clear(@Nonnull final NpcFile file);
 
     public static class Helmet extends CommandEquipmentRemove {
-        public Helmet(@Nonnull final NPCs npcs) {
+        public Helmet(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -63,13 +63,13 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
         }
 
         @Override
-        public void clear(final NPCFile file) {
+        public void clear(final NpcFile file) {
             file.setHelmet(null);
         }
     }
 
     public static class Chestplate extends CommandEquipmentRemove {
-        public Chestplate(@Nonnull final NPCs npcs) {
+        public Chestplate(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -84,13 +84,13 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
         }
 
         @Override
-        public void clear(final NPCFile file) {
+        public void clear(final NpcFile file) {
             file.setChestplate(null);
         }
     }
 
     public static class Leggings extends CommandEquipmentRemove {
-        public Leggings(@Nonnull final NPCs npcs) {
+        public Leggings(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -105,13 +105,13 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
         }
 
         @Override
-        public void clear(final NPCFile file) {
+        public void clear(final NpcFile file) {
             file.setLeggings(null);
         }
     }
 
     public static class Boots extends CommandEquipmentRemove {
-        public Boots(@Nonnull final NPCs npcs) {
+        public Boots(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -126,13 +126,13 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
         }
 
         @Override
-        public void clear(final NPCFile file) {
+        public void clear(final NpcFile file) {
             file.setBoots(null);
         }
     }
 
     public static class MainHand extends CommandEquipmentRemove {
-        public MainHand(@Nonnull final NPCs npcs) {
+        public MainHand(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -147,13 +147,13 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
         }
 
         @Override
-        public void clear(final NPCFile file) {
+        public void clear(final NpcFile file) {
             file.setMainHand(null);
         }
     }
 
     public static class OffHand extends CommandEquipmentRemove {
-        public OffHand(@Nonnull final NPCs npcs) {
+        public OffHand(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -168,7 +168,7 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
         }
 
         @Override
-        public void clear(final NPCFile file) {
+        public void clear(final NpcFile file) {
             file.setOffHand(null);
         }
     }

@@ -1,10 +1,10 @@
 package me.mrdaniel.npcs.data.npc.actions;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
 import me.mrdaniel.npcs.data.npc.actions.conditions.Condition;
 import me.mrdaniel.npcs.exceptions.ConditionException;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import me.mrdaniel.npcs.utils.TextUtils;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -48,7 +48,7 @@ public class ActionCondition extends Action {
     }
 
     @Override
-    public void execute(final NPCs npcs, final ActionResult result, final Player p, final NPCFile file) {
+    public void execute(final Npcs npcs, final ActionResult result, final Player p, final NpcFile file) {
         if (this.condition.isMet(p)) {
             if (this.take) {
                 this.condition.take(p);

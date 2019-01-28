@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.events;
 
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
@@ -11,16 +11,16 @@ import org.spongepowered.api.plugin.PluginContainer;
 
 import javax.annotation.Nonnull;
 
-public class NPCEvent extends AbstractEvent implements Cancellable {
+public class NpcEvent extends AbstractEvent implements Cancellable {
 
     private final Player player;
-    private final NPCFile file;
+    private final NpcFile file;
     private final Living npc;
     private final Cause cause;
 
     private boolean cancelled;
 
-    protected NPCEvent(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NPCFile file) {
+    protected NpcEvent(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NpcFile file) {
         this.player = player;
         this.npc = npc;
         this.file = file;
@@ -35,12 +35,12 @@ public class NPCEvent extends AbstractEvent implements Cancellable {
     }
 
     @Nonnull
-    public Living getNPC() {
+    public Living getNpc() {
         return this.npc;
     }
 
     @Nonnull
-    public NPCFile getFile() {
+    public NpcFile getFile() {
         return this.file;
     }
 
@@ -60,26 +60,26 @@ public class NPCEvent extends AbstractEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    public static class Interact extends NPCEvent {
-        public Interact(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public static class Interact extends NpcEvent {
+        public Interact(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NpcFile file) {
             super(container, player, npc, file);
         }
     }
 
-    public static class Edit extends NPCEvent {
-        public Edit(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public static class Edit extends NpcEvent {
+        public Edit(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NpcFile file) {
             super(container, player, npc, file);
         }
     }
 
-    public static class Select extends NPCEvent {
-        public Select(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public static class Select extends NpcEvent {
+        public Select(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NpcFile file) {
             super(container, player, npc, file);
         }
     }
 
-    public static class Remove extends NPCEvent {
-        public Remove(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public static class Remove extends NpcEvent {
+        public Remove(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc, @Nonnull final NpcFile file) {
             super(container, player, npc, file);
         }
     }

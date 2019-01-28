@@ -1,12 +1,12 @@
 package me.mrdaniel.npcs.commands.action;
 
 import com.google.common.collect.Maps;
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
-import me.mrdaniel.npcs.commands.NPCCommand;
+import me.mrdaniel.npcs.commands.NpcCommand;
 import me.mrdaniel.npcs.data.npc.actions.*;
-import me.mrdaniel.npcs.events.NPCEvent;
-import me.mrdaniel.npcs.managers.menu.NPCMenu;
+import me.mrdaniel.npcs.events.NpcEvent;
+import me.mrdaniel.npcs.managers.menu.NpcMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.entity.living.player.Player;
@@ -16,16 +16,16 @@ import org.spongepowered.api.text.format.TextColors;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
-public abstract class CommandActionAdd extends NPCCommand {
+public abstract class CommandActionAdd extends NpcCommand {
 
-    public CommandActionAdd(@Nonnull final NPCs npcs) {
+    public CommandActionAdd(@Nonnull final Npcs npcs) {
         super(npcs, PageTypes.ACTIONS);
     }
 
     @Override
-    public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
-        if (NPCs.getGame().getEventManager().post(new NPCEvent.Edit(NPCs.getContainer(), p, menu.getNPC(), menu.getFile()))) {
-            throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
+    public void execute(final Player p, final NpcMenu menu, final CommandContext args) throws CommandException {
+        if (Npcs.getGame().getEventManager().post(new NpcEvent.Edit(Npcs.getContainer(), p, menu.getNpc(), menu.getFile()))) {
+            throw new CommandException(Text.of(TextColors.RED, "Could not edit Npc: Event was cancelled!"));
         }
 
         menu.getFile().getActions().add(this.create(args));
@@ -37,7 +37,7 @@ public abstract class CommandActionAdd extends NPCCommand {
     public abstract Action create(@Nonnull final CommandContext args);
 
     public static class PlayerCommand extends CommandActionAdd {
-        public PlayerCommand(@Nonnull final NPCs npcs) {
+        public PlayerCommand(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -48,7 +48,7 @@ public abstract class CommandActionAdd extends NPCCommand {
     }
 
     public static class ConsoleCommand extends CommandActionAdd {
-        public ConsoleCommand(@Nonnull final NPCs npcs) {
+        public ConsoleCommand(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -59,7 +59,7 @@ public abstract class CommandActionAdd extends NPCCommand {
     }
 
     public static class Message extends CommandActionAdd {
-        public Message(@Nonnull final NPCs npcs) {
+        public Message(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -70,7 +70,7 @@ public abstract class CommandActionAdd extends NPCCommand {
     }
 
     public static class Delay extends CommandActionAdd {
-        public Delay(@Nonnull final NPCs npcs) {
+        public Delay(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -81,7 +81,7 @@ public abstract class CommandActionAdd extends NPCCommand {
     }
 
     public static class Pause extends CommandActionAdd {
-        public Pause(@Nonnull final NPCs npcs) {
+        public Pause(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -92,7 +92,7 @@ public abstract class CommandActionAdd extends NPCCommand {
     }
 
     public static class Goto extends CommandActionAdd {
-        public Goto(@Nonnull final NPCs npcs) {
+        public Goto(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -103,7 +103,7 @@ public abstract class CommandActionAdd extends NPCCommand {
     }
 
     public static class Choices extends CommandActionAdd {
-        public Choices(@Nonnull final NPCs npcs) {
+        public Choices(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 

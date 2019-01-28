@@ -2,7 +2,7 @@ package me.mrdaniel.npcs.data.npc;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Preconditions;
-import me.mrdaniel.npcs.data.NPCKeys;
+import me.mrdaniel.npcs.data.NpcKeys;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataView;
@@ -16,14 +16,14 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 
-public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
+public class NpcData extends AbstractData<NpcData, ImmutableNpcData> {
 
     private int startup;
     private int id;
     private boolean looking;
     private boolean interact;
 
-    public NPCData(final int startup, final int id, final boolean looking, final boolean interact) {
+    public NpcData(final int startup, final int id, final boolean looking, final boolean interact) {
         this.startup = startup;
         this.id = id;
         this.looking = looking;
@@ -34,25 +34,25 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 
     @Override
     protected void registerGettersAndSetters() {
-        registerKeyValue(NPCKeys.STARTUP, this::getStartupValue);
-        registerFieldGetter(NPCKeys.STARTUP, this::getStartup);
-        registerFieldSetter(NPCKeys.STARTUP, this::setStartup);
+        registerKeyValue(NpcKeys.STARTUP, this::getStartupValue);
+        registerFieldGetter(NpcKeys.STARTUP, this::getStartup);
+        registerFieldSetter(NpcKeys.STARTUP, this::setStartup);
 
-        registerKeyValue(NPCKeys.ID, this::getIdValue);
-        registerFieldGetter(NPCKeys.ID, this::getId);
-        registerFieldSetter(NPCKeys.ID, this::setId);
+        registerKeyValue(NpcKeys.ID, this::getIdValue);
+        registerFieldGetter(NpcKeys.ID, this::getId);
+        registerFieldSetter(NpcKeys.ID, this::setId);
 
-        registerKeyValue(NPCKeys.LOOKING, this::getLookingValue);
-        registerFieldGetter(NPCKeys.LOOKING, this::isLooking);
-        registerFieldSetter(NPCKeys.LOOKING, this::setLooking);
+        registerKeyValue(NpcKeys.LOOKING, this::getLookingValue);
+        registerFieldGetter(NpcKeys.LOOKING, this::isLooking);
+        registerFieldSetter(NpcKeys.LOOKING, this::setLooking);
 
-        registerKeyValue(NPCKeys.INTERACT, this::getInteractValue);
-        registerFieldGetter(NPCKeys.INTERACT, this::canInteract);
-        registerFieldSetter(NPCKeys.INTERACT, this::setInteract);
+        registerKeyValue(NpcKeys.INTERACT, this::getInteractValue);
+        registerFieldGetter(NpcKeys.INTERACT, this::canInteract);
+        registerFieldSetter(NpcKeys.INTERACT, this::setInteract);
     }
 
     public Value<Integer> getStartupValue() {
-        return NPCKeys.FACTORY.createValue(NPCKeys.STARTUP, this.startup);
+        return NpcKeys.FACTORY.createValue(NpcKeys.STARTUP, this.startup);
     }
 
     public int getStartup() {
@@ -64,7 +64,7 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
     }
 
     public Value<Integer> getIdValue() {
-        return NPCKeys.FACTORY.createValue(NPCKeys.ID, this.id);
+        return NpcKeys.FACTORY.createValue(NpcKeys.ID, this.id);
     }
 
     public int getId() {
@@ -76,7 +76,7 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
     }
 
     public Value<Boolean> getLookingValue() {
-        return NPCKeys.FACTORY.createValue(NPCKeys.LOOKING, this.looking);
+        return NpcKeys.FACTORY.createValue(NpcKeys.LOOKING, this.looking);
     }
 
     public boolean isLooking() {
@@ -88,7 +88,7 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
     }
 
     public Value<Boolean> getInteractValue() {
-        return NPCKeys.FACTORY.createValue(NPCKeys.INTERACT, this.interact);
+        return NpcKeys.FACTORY.createValue(NpcKeys.INTERACT, this.interact);
     }
 
     public boolean canInteract() {
@@ -100,12 +100,12 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
     }
 
     @Nonnull
-    public Optional<NPCData> from(@Nonnull final DataView view) {
-        return Optional.of(new NPCData(
-                view.getInt(NPCKeys.STARTUP.getQuery()).orElse(0),
-                view.getInt(NPCKeys.ID.getQuery()).orElse(0),
-                view.getBoolean(NPCKeys.LOOKING.getQuery()).orElse(false),
-                view.getBoolean(NPCKeys.INTERACT.getQuery()).orElse(true)));
+    public Optional<NpcData> from(@Nonnull final DataView view) {
+        return Optional.of(new NpcData(
+                view.getInt(NpcKeys.STARTUP.getQuery()).orElse(0),
+                view.getInt(NpcKeys.ID.getQuery()).orElse(0),
+                view.getBoolean(NpcKeys.LOOKING.getQuery()).orElse(false),
+                view.getBoolean(NpcKeys.INTERACT.getQuery()).orElse(true)));
     }
 
     @Override
@@ -114,23 +114,23 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
     }
 
     @Override
-    public Optional<NPCData> fill(DataHolder holder, MergeFunction overlap) {
+    public Optional<NpcData> fill(DataHolder holder, MergeFunction overlap) {
         return Optional.of(Preconditions.checkNotNull(overlap).merge(copy(), from(holder.toContainer()).orElse(null)));
     }
 
     @Override
-    public Optional<NPCData> from(DataContainer container) {
+    public Optional<NpcData> from(DataContainer container) {
         return from((DataView) container);
     }
 
     @Override
-    public NPCData copy() {
-        return new NPCData(this.startup, this.id, this.looking, this.interact);
+    public NpcData copy() {
+        return new NpcData(this.startup, this.id, this.looking, this.interact);
     }
 
     @Override
-    public ImmutableNPCData asImmutable() {
-        return new ImmutableNPCData(this.startup, this.id, this.looking, this.interact);
+    public ImmutableNpcData asImmutable() {
+        return new ImmutableNpcData(this.startup, this.id, this.looking, this.interact);
     }
 
     @Override

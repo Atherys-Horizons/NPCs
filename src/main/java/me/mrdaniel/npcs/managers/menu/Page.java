@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
 
@@ -10,7 +10,7 @@ public abstract class Page {
 
     protected final Text[] lines;
 
-    public Page(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public Page(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         this.lines = new Text[18];
 
         this.update(npc, file);
@@ -27,10 +27,10 @@ public abstract class Page {
         return this.lines;
     }
 
-    public void update(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public void update(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         this.reset();
         this.updatePage(npc, file);
     }
 
-    protected abstract void updatePage(@Nonnull final Living npc, @Nonnull final NPCFile file);
+    protected abstract void updatePage(@Nonnull final Living npc, @Nonnull final NpcFile file);
 }

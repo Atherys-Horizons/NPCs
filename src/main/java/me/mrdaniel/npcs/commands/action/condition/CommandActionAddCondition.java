@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.commands.action.condition;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.commands.action.CommandActionAdd;
 import me.mrdaniel.npcs.data.npc.actions.Action;
 import me.mrdaniel.npcs.data.npc.actions.ActionCondition;
@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 
 public abstract class CommandActionAddCondition extends CommandActionAdd {
 
-    public CommandActionAddCondition(@Nonnull final NPCs npcs) {
+    public CommandActionAddCondition(@Nonnull final Npcs npcs) {
         super(npcs);
     }
 
@@ -27,7 +27,7 @@ public abstract class CommandActionAddCondition extends CommandActionAdd {
     public abstract me.mrdaniel.npcs.data.npc.actions.conditions.Condition createCondition(@Nonnull final CommandContext args);
 
     public static class Item extends CommandActionAddCondition {
-        public Item(@Nonnull final NPCs npcs) {
+        public Item(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -38,7 +38,7 @@ public abstract class CommandActionAddCondition extends CommandActionAdd {
     }
 
     public static class Level extends CommandActionAddCondition {
-        public Level(@Nonnull final NPCs npcs) {
+        public Level(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 
@@ -49,7 +49,7 @@ public abstract class CommandActionAddCondition extends CommandActionAdd {
     }
 
     public static class Exp extends CommandActionAddCondition {
-        public Exp(@Nonnull final NPCs npcs) {
+        public Exp(@Nonnull final Npcs npcs) {
             super(npcs);
         }
 

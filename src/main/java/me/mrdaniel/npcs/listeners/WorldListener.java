@@ -1,9 +1,9 @@
 package me.mrdaniel.npcs.listeners;
 
-import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.events.NPCEvent;
-import me.mrdaniel.npcs.exceptions.NPCException;
+import me.mrdaniel.npcs.Npcs;
+import me.mrdaniel.npcs.data.npc.NpcData;
+import me.mrdaniel.npcs.events.NpcEvent;
+import me.mrdaniel.npcs.exceptions.NpcException;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
@@ -26,18 +26,18 @@ import javax.annotation.Nonnull;
 
 public class WorldListener {
 
-    public WorldListener(@Nonnull final NPCs npcs) {
+    public WorldListener(@Nonnull final Npcs npcs) {
     }
 
     @Listener
     public void onUnloadWorld(final GameStoppingEvent e) {
-        NPCs.getNPCManager().getAll().forEach(npcFile -> {
+        Npcs.getNpcManager().getAll().forEach(npcFile -> {
             try {
                 if (npcFile.isTemporary()) {
-                    NPCs.getNPCManager().remove(npcFile.getId());
+                    Npcs.getNpcManager().remove(npcFile.getId());
                 }
-            } catch(NPCException exception) {
-               NPCs.getInstance().getLogger().error("NPC with ID {} does not exist", npcFile.getId());
+            } catch(NpcException exception) {
+               Npcs.getInstance().getLogger().error("Npc with ID {} does not exist", npcFile.getId());
             }
         });
     }
@@ -45,40 +45,40 @@ public class WorldListener {
     @Listener
     public void onLoadWorld(final LoadWorldEvent e) {
         World w = e.getTargetWorld();
-        NPCs.getNPCManager().load(w);
+        Npcs.getNpcManager().load(w);
     }
 
     @Listener(order = Order.EARLY)
     public void onEntitySpawn(final SpawnEntityEvent e) {
-        e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> data.ifOld(NPCs.getStartup(), ent::remove)));
+        e.getEntities().forEach(ent -> ent.get(NpcData.class).ifPresent(data -> data.ifOld(Npcs.getStartup(), ent::remove)));
     }
 
     @Listener(order = Order.EARLY)
     public void onCollide(final CollideEntityEvent e) {
-        e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> e.setCancelled(true)));
+        e.getEntities().forEach(ent -> ent.get(NpcData.class).ifPresent(data -> e.setCancelled(true)));
     }
 
     @Listener(order = Order.EARLY)
     public void onDamage(final DamageEntityEvent e) {
-        e.getTargetEntity().get(NPCData.class).ifPresent(data -> e.setCancelled(true));
+        e.getTargetEntity().get(NpcData.class).ifPresent(data -> e.setCancelled(true));
     }
 
     @Listener(order = Order.EARLY)
     public void onClick(final InteractEntityEvent e, @Root final Player p) {
-        e.getTargetEntity().get(NPCData.class).ifPresent(data -> {
+        e.getTargetEntity().get(NpcData.class).ifPresent(data -> {
             Living npc = (Living) e.getTargetEntity();
             e.setCancelled(!data.canInteract());
 
             if (e instanceof InteractEntityEvent.Secondary.MainHand) {
-                NPCs.getNPCManager().getFile(data.getId()).ifPresent(file -> {
+                Npcs.getNpcManager().getFile(data.getId()).ifPresent(file -> {
                     if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
-                        NPCs.getMenuManager().select(p, npc, file);
+                        Npcs.getMenuManager().select(p, npc, file);
                     } else {
-                        if (!NPCs.getGame().getEventManager().post(new NPCEvent.Interact(NPCs.getContainer(), p, npc, file))) {
+                        if (!Npcs.getGame().getEventManager().post(new NpcEvent.Interact(Npcs.getContainer(), p, npc, file))) {
                             try {
-                                NPCs.getActionManager().execute(p.getUniqueId(), file);
-                            } catch (final NPCException exc) {
-                                p.sendMessage(Text.of(TextColors.RED, "Failed to perform NPC actions: " + exc.getMessage()));
+                                Npcs.getActionManager().execute(p.getUniqueId(), file);
+                            } catch (final NpcException exc) {
+                                p.sendMessage(Text.of(TextColors.RED, "Failed to perform Npc actions: " + exc.getMessage()));
                             }
                         }
                     }
@@ -89,7 +89,7 @@ public class WorldListener {
 
     @Listener(order = Order.LATE)
     public void onQuit(final ClientConnectionEvent.Disconnect e) {
-        NPCs.getMenuManager().deselect(e.getTargetEntity().getUniqueId());
-        NPCs.getActionManager().removeChoosing(e.getTargetEntity().getUniqueId());
+        Npcs.getMenuManager().deselect(e.getTargetEntity().getUniqueId());
+        Npcs.getActionManager().removeChoosing(e.getTargetEntity().getUniqueId());
     }
 }

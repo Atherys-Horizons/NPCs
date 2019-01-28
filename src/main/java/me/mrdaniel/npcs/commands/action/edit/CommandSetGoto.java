@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.commands.action.edit;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
 import me.mrdaniel.npcs.commands.ActionCommand;
 import me.mrdaniel.npcs.data.npc.actions.Action;
@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public class CommandSetGoto extends ActionCommand {
 
-    public CommandSetGoto(@Nonnull final NPCs npcs) {
+    public CommandSetGoto(@Nonnull final Npcs npcs) {
         super(npcs, ActionTypes.GOTO);
     }
 

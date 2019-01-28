@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.managers.menu;
 
 import me.mrdaniel.npcs.data.npc.actions.Action;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
@@ -59,12 +59,12 @@ public class ActionsPage extends MultiPage {
                     .onClick(TextActions.suggestCommand("/npc action add condition exp <exp>")).build())
             .build();
 
-    public ActionsPage(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public ActionsPage(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         super(npc, file);
     }
 
     @Override
-    public void updatePage(final Living npc, final NPCFile file) {
+    public void updatePage(final Living npc, final NpcFile file) {
         this.add(Text.of(TextColors.GOLD, "Actions: "));
 
         for (int i = 0; i < file.getActions().size(); i++) {

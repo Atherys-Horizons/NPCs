@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.Living;
@@ -14,9 +14,9 @@ public class MainPage extends Page {
 
     private static final Text BUTTONS = Text.builder().append(
             Text.of("   "),
-            Text.builder().append(Text.of(TextColors.YELLOW, "[Go To]")).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Teleport to NPC"))).onClick(TextActions.runCommand("/npc goto")).build(),
+            Text.builder().append(Text.of(TextColors.YELLOW, "[Go To]")).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Teleport to Npc"))).onClick(TextActions.runCommand("/npc goto")).build(),
             Text.of("   "),
-            Text.builder().append(Text.of(TextColors.YELLOW, "[Move]")).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Teleport NPC to you"))).onClick(TextActions.runCommand("/npc move")).build(),
+            Text.builder().append(Text.of(TextColors.YELLOW, "[Move]")).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Teleport Npc to you"))).onClick(TextActions.runCommand("/npc move")).build(),
             Text.of("   "),
             Text.builder().append(Text.of(TextColors.YELLOW, "[Deselect]")).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Deselect"))).onClick(TextActions.runCommand("/npc deselect")).build(),
             Text.of("   "),
@@ -27,18 +27,18 @@ public class MainPage extends Page {
             Text.builder().append(Text.of(TextColors.RED, "[Remove]")).onHover(TextActions.showText(Text.of(TextColors.RED, "Remove"))).onClick(TextActions.suggestCommand("/npc remove")).build())
             .build();
 
-    public MainPage(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public MainPage(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         super(npc, file);
     }
 
     @Override
-    public void updatePage(final Living npc, final NPCFile file) {
+    public void updatePage(final Living npc, final NpcFile file) {
         int c = 0;
 
         lines[c] = BUTTONS;
         ++c;
 
-        lines[++c] = Text.of(TextColors.GOLD, "NPC ID: ", TextColors.RED, file.getId());
+        lines[++c] = Text.of(TextColors.GOLD, "Npc ID: ", TextColors.RED, file.getId());
         lines[++c] = Text.of(TextColors.GOLD, "Entity: ", TextColors.RED, TextUtils.capitalize(npc.getType().getName()));
         lines[++c] = Text.of(TextColors.GOLD, "Location: ", TextColors.RED, npc.getWorld().getName(), " ", npc.getLocation().getBlockX(), " ", npc.getLocation().getBlockY(), " ", npc.getLocation().getBlockZ());
         ++c;

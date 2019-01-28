@@ -4,7 +4,7 @@ import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.data.npc.actions.Action;
 import me.mrdaniel.npcs.exceptions.ActionException;
 import me.mrdaniel.npcs.utils.TextUtils;
@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class NPCFile {
+public class NpcFile {
 
     private final int id;
     private boolean temporary;
@@ -43,13 +43,13 @@ public class NPCFile {
     private final List<Action> actions;
     private final Map<UUID, Integer> current;
 
-    public NPCFile(@Nonnull final Path storage_path, final int id) {
+    public NpcFile(@Nonnull final Path storage_path, final int id) {
         Path path = storage_path.resolve("npc_" + id + ".conf");
         if (!Files.exists(path)) {
             try {
                 Files.createFile(path);
             } catch (final IOException exc) {
-                NPCs.getInstance().getLogger().error("Failed to create npc data file: {}", exc.getMessage());
+                Npcs.getInstance().getLogger().error("Failed to create npc data file: {}", exc.getMessage());
             }
         }
 
@@ -65,7 +65,7 @@ public class NPCFile {
             try {
                 actions[i] = Action.of(this.node.getNode("actions", String.valueOf(i)));
             } catch (final ActionException exc) {
-                NPCs.getInstance().getLogger().error("Failed to read action {} for npc {}!", i, id);
+                Npcs.getInstance().getLogger().error("Failed to read action {} for npc {}!", i, id);
             }
         }
         this.actions = Lists.newArrayList(actions);
@@ -75,7 +75,7 @@ public class NPCFile {
         try {
             return this.loader.load();
         } catch (final IOException exc) {
-            NPCs.getInstance().getLogger().error("Failed to load npc data file for npc {}: {}", this.id, exc.getMessage());
+            Npcs.getInstance().getLogger().error("Failed to load npc data file for npc {}: {}", this.id, exc.getMessage());
             return this.loader.createEmptyNode();
         }
     }
@@ -84,7 +84,7 @@ public class NPCFile {
         try {
             this.loader.save(this.node);
         } catch (final IOException exc) {
-            NPCs.getInstance().getLogger().error("Failed to save npc data file for npc {}: {}", this.id, exc.getMessage());
+            Npcs.getInstance().getLogger().error("Failed to save npc data file for npc {}: {}", this.id, exc.getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ public class NPCFile {
         try {
             Files.delete(storage_path.resolve("npc_" + this.id + ".conf"));
         } catch (final IOException exc) {
-            NPCs.getInstance().getLogger().error("Failed to delete npc data file for npc {}: {}", this.id, exc.getMessage());
+            Npcs.getInstance().getLogger().error("Failed to delete npc data file for npc {}: {}", this.id, exc.getMessage());
         }
     }
 
@@ -132,7 +132,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<World> getWorld() {
-        return NPCs.getGame().getServer().getWorld(this.getWorldName());
+        return Npcs.getGame().getServer().getWorld(this.getWorldName());
     }
 
     public void setWorld(@Nonnull final World world) {
@@ -179,7 +179,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<EntityType> getType() {
-        return Optional.ofNullable(this.node.getNode("type").getString()).map(id -> NPCs.getGame().getRegistry().getType(EntityType.class, id).orElse(null));
+        return Optional.ofNullable(this.node.getNode("type").getString()).map(id -> Npcs.getGame().getRegistry().getType(EntityType.class, id).orElse(null));
     }
 
     public void setType(@Nonnull final EntityType type) {
@@ -215,7 +215,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<TextColor> getGlowColor() {
-        return Optional.ofNullable(this.node.getNode("glow", "color").getString()).map(id -> NPCs.getGame().getRegistry().getType(TextColor.class, id).orElse(null));
+        return Optional.ofNullable(this.node.getNode("glow", "color").getString()).map(id -> Npcs.getGame().getRegistry().getType(TextColor.class, id).orElse(null));
     }
 
     public void setGlowColor(@Nonnull final TextColor color) {
@@ -290,7 +290,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<Career> getCareer() {
-        return Optional.ofNullable(this.node.getNode("career").getString()).map(id -> NPCs.getGame().getRegistry().getType(Career.class, id).orElse(null));
+        return Optional.ofNullable(this.node.getNode("career").getString()).map(id -> Npcs.getGame().getRegistry().getType(Career.class, id).orElse(null));
     }
 
     public void setCareer(@Nonnull final Career career) {
@@ -299,7 +299,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<HorseStyle> getHorseStyle() {
-        return Optional.ofNullable(this.node.getNode("horse", "style").getString()).map(id -> NPCs.getGame().getRegistry().getType(HorseStyle.class, id).orElse(null));
+        return Optional.ofNullable(this.node.getNode("horse", "style").getString()).map(id -> Npcs.getGame().getRegistry().getType(HorseStyle.class, id).orElse(null));
     }
 
     public void setHorseStyle(@Nonnull final HorseStyle style) {
@@ -308,7 +308,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<HorseColor> getHorseColor() {
-        return Optional.ofNullable(this.node.getNode("horse", "color").getString()).map(id -> NPCs.getGame().getRegistry().getType(HorseColor.class, id).orElse(null));
+        return Optional.ofNullable(this.node.getNode("horse", "color").getString()).map(id -> Npcs.getGame().getRegistry().getType(HorseColor.class, id).orElse(null));
     }
 
     public void setHorseColor(@Nonnull final HorseColor color) {
@@ -317,7 +317,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<LlamaVariant> getVariant() {
-        return Optional.ofNullable(this.node.getNode("variant").getString()).map(id -> NPCs.getGame().getRegistry().getType(LlamaVariant.class, id).orElse(null));
+        return Optional.ofNullable(this.node.getNode("variant").getString()).map(id -> Npcs.getGame().getRegistry().getType(LlamaVariant.class, id).orElse(null));
     }
 
     public void setVariant(@Nonnull final LlamaVariant variant) {
@@ -326,7 +326,7 @@ public class NPCFile {
 
     @Nonnull
     public Optional<OcelotType> getCat() {
-        return Optional.ofNullable(this.node.getNode("cat").getString()).map(id -> NPCs.getGame().getRegistry().getType(OcelotType.class, id).orElse(null));
+        return Optional.ofNullable(this.node.getNode("cat").getString()).map(id -> Npcs.getGame().getRegistry().getType(OcelotType.class, id).orElse(null));
     }
 
     public void setCat(@Nonnull final OcelotType cat) {

@@ -9,24 +9,24 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class NPCDataBuilder extends AbstractDataBuilder<NPCData> implements DataManipulatorBuilder<NPCData, ImmutableNPCData> {
+public class NpcDataBuilder extends AbstractDataBuilder<NpcData> implements DataManipulatorBuilder<NpcData, ImmutableNpcData> {
 
-    public NPCDataBuilder() {
-        super(NPCData.class, 1);
+    public NpcDataBuilder() {
+        super(NpcData.class, 1);
     }
 
     @Override
-    public NPCData create() {
-        return new NPCData(0, 0, false, true);
+    public NpcData create() {
+        return new NpcData(0, 0, false, true);
     }
 
     @Override
-    public Optional<NPCData> createFrom(@Nonnull DataHolder dataHolder) {
+    public Optional<NpcData> createFrom(@Nonnull DataHolder dataHolder) {
         return create().fill(dataHolder);
     }
 
     @Override
-    protected Optional<NPCData> buildContent(@Nonnull DataView view) throws InvalidDataException {
+    protected Optional<NpcData> buildContent(@Nonnull DataView view) throws InvalidDataException {
         return create().from(view);
     }
 }

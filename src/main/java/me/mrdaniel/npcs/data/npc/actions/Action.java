@@ -1,10 +1,10 @@
 package me.mrdaniel.npcs.data.npc.actions;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.catalogtypes.actions.ActionType;
 import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
 import me.mrdaniel.npcs.exceptions.ActionException;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
@@ -43,7 +43,7 @@ public abstract class Action {
         this.serializeValue(node);
     }
 
-    public abstract void execute(@Nonnull final NPCs npcs, final ActionResult result, @Nonnull final Player p, @Nonnull final NPCFile file);
+    public abstract void execute(@Nonnull final Npcs npcs, final ActionResult result, @Nonnull final Player p, @Nonnull final NpcFile file);
 
     public abstract void serializeValue(@Nonnull final ConfigurationNode node);
 }

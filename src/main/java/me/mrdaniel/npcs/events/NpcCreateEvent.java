@@ -10,7 +10,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 
 import javax.annotation.Nonnull;
 
-public class NPCCreateEvent extends AbstractEvent implements Cancellable {
+public class NpcCreateEvent extends AbstractEvent implements Cancellable {
 
     private final Player player;
     private final EntityType type;
@@ -18,7 +18,7 @@ public class NPCCreateEvent extends AbstractEvent implements Cancellable {
 
     private boolean cancelled;
 
-    public NPCCreateEvent(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final EntityType type) {
+    public NpcCreateEvent(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final EntityType type) {
         this.player = player;
         this.type = type;
         this.cause = Cause.builder().append(player).append(type).build(Sponge.getCauseStackManager().getCurrentContext());

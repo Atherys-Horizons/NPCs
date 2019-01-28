@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.commands.action.edit;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.Npcs;
 import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
 import me.mrdaniel.npcs.commands.ActionCommand;
 import me.mrdaniel.npcs.data.npc.actions.Action;
@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public class CommandSetTake extends ActionCommand {
 
-    public CommandSetTake(@Nonnull final NPCs npcs) {
+    public CommandSetTake(@Nonnull final Npcs npcs) {
         super(npcs, ActionTypes.CONDITION);
     }
 

@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.managers.menu;
 import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.catalogtypes.menupages.PageType;
 import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.living.Living;
@@ -16,13 +16,13 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Optional;
 
-public class NPCMenu {
+public class NpcMenu {
 
     private final Living npc;
-    private final NPCFile file;
+    private final NpcFile file;
     private final Map<PageType, Page> pages;
 
-    public NPCMenu(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public NpcMenu(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         this.npc = npc;
         this.file = file;
         this.pages = Maps.newHashMap();
@@ -39,7 +39,7 @@ public class NPCMenu {
 
     public void send(@Nonnull final Player p, @Nonnull final Page page) {
         p.sendMessage(Text.EMPTY);
-        p.sendMessage(Text.of(Text.of(TextColors.YELLOW, "----------------=====[ ", TextColors.RED, "NPC Menu", TextColors.YELLOW, " ]=====----------------")));
+        p.sendMessage(Text.of(Text.of(TextColors.YELLOW, "----------------=====[ ", TextColors.RED, "Npc Menu", TextColors.YELLOW, " ]=====----------------")));
         p.sendMessages(page.getLines());
         p.sendMessage(this.getBottomLine());
     }
@@ -100,12 +100,12 @@ public class NPCMenu {
     }
 
     @Nonnull
-    public Living getNPC() {
+    public Living getNpc() {
         return this.npc;
     }
 
     @Nonnull
-    public NPCFile getFile() {
+    public NpcFile getFile() {
         return this.file;
     }
 }

@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.living.Living;
@@ -14,12 +14,12 @@ import java.util.Optional;
 
 public class ArmorPage extends Page {
 
-    public ArmorPage(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public ArmorPage(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         super(npc, file);
     }
 
     @Override
-    public void updatePage(final Living npc, final NPCFile file) {
+    public void updatePage(final Living npc, final NpcFile file) {
         int c = 0;
 
         ArmorEquipable ae = (ArmorEquipable) npc;

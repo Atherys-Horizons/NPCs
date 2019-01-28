@@ -7,7 +7,7 @@ public interface PlaceHolderManager {
 
     String formatCommand(Player p, String txt);
 
-    Text formatNPCMessage(Player p, String txt, String npc_name);
+    Text formatNpcMessage(Player p, String txt, String npc_name);
 
     Text formatChoiceMessage(Player p, Text choices);
 }

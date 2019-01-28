@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.managers.menu;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.NpcFile;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
 
@@ -14,7 +14,7 @@ public abstract class MultiPage extends Page {
     protected int count;
     protected int current;
 
-    public MultiPage(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public MultiPage(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         super(npc, file);
     }
 
@@ -25,7 +25,7 @@ public abstract class MultiPage extends Page {
     }
 
     @Override
-    public void update(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+    public void update(@Nonnull final Living npc, @Nonnull final NpcFile file) {
         this.pages = Lists.newArrayList();
         this.count = 0;
         this.current = 0;

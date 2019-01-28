@@ -1,9 +1,9 @@
 package me.mrdaniel.npcs.commands.main;
 
 import com.flowpowered.math.vector.Vector3i;
-import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.Npcs;
+import me.mrdaniel.npcs.exceptions.NpcException;
+import me.mrdaniel.npcs.io.NpcFile;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -18,19 +18,19 @@ import javax.annotation.Nonnull;
 
 public class CommandList implements CommandExecutor {
 
-    public CommandList(@Nonnull final NPCs npcs) {
+    public CommandList(@Nonnull final Npcs npcs) {
     }
 
     @Override
     public CommandResult execute(final CommandSource src, final CommandContext args) throws CommandException {
-        src.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC List", TextColors.YELLOW, " ]=====---------------")));
-        NPCs.getNPCManager().getAll().forEach(file -> src.sendMessage(this.getNPCText(file)));
+        src.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "Npc List", TextColors.YELLOW, " ]=====---------------")));
+        Npcs.getNpcManager().getAll().forEach(file -> src.sendMessage(this.getNpcText(file)));
         src.sendMessage(Text.of(TextColors.YELLOW, "--------------------------------------------------"));
         return CommandResult.success();
     }
 
     @Nonnull
-    private Text getNPCText(@Nonnull final NPCFile file) {
+    private Text getNpcText(@Nonnull final NpcFile file) {
         final Vector3i pos = file.getPosition().toInt();
 
         Text.Builder b = Text.builder().append(Text.of(TextColors.BLUE, file.getId(), ": "),
@@ -40,8 +40,8 @@ public class CommandList implements CommandExecutor {
         return b.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Select")))
                 .onClick(TextActions.executeCallback(src -> {
                     try {
-                        NPCs.getMenuManager().select((Player) src, file);
-                    } catch (final NPCException exc) {
+                        Npcs.getMenuManager().select((Player) src, file);
+                    } catch (final NpcException exc) {
                         src.sendMessage(Text.of(TextColors.RED, exc.getMessage()));
                     }
                 })).build();
