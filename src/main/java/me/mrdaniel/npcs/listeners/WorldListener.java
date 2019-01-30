@@ -42,10 +42,10 @@ public class WorldListener {
         });
     }
 
-    @Listener
+    @Listener(order = Order.LATE)
     public void onLoadWorld(final LoadWorldEvent e) {
         World w = e.getTargetWorld();
-        Npcs.getNpcManager().load(w);
+        Task.builder().delayTicks(100).execute(() -> Npcs.getNpcManager().load(w)).submit(Npcs.getInstance());
     }
 
     @Listener(order = Order.EARLY)

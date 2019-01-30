@@ -62,7 +62,7 @@ import java.util.Random;
     id = "npcs",
     name = "NPCs",
     version = "3.0.3-API7",
-    authors = {"Daniel12321, A'therys Horizons"},
+    authors = "Daniel12321",
     url = "https://github.com/Atherys-Horizons/NPCs",
     description = "A plugin that adds simple custom NPC's to your worlds.",
     dependencies = {
